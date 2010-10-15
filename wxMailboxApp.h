@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      wxMailboxApp.h
  * Purpose:   Defines Application Class
- * Author:    Jan Müller (webmaster@ita-forum.de)
+ * Author:    Jan Mueller (webmaster@ita-forum.de)
  * Created:   2010-10-15
- * Copyright: Jan Müller ()
+ * Copyright: Jan Mueller ()
  * License:
  **************************************************************/
 
