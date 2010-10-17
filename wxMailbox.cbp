@@ -21,6 +21,7 @@
 					<Add directory="$(WXWIN)\lib\gcc_lib\mswud" />
 				</ResourceCompiler>
 				<Linker>
+					<Add library="libwxcode_msw28ud_wxsqlite3.a" />
 					<Add library="libwxbase28ud_net.a" />
 					<Add library="libwxmsw28ud_html.a" />
 					<Add library="libwxmsw28ud_core.a" />
@@ -45,6 +46,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="libwxcode_msw28u_wxsqlite3.a" />
 					<Add library="libwxbase28u_net.a" />
 					<Add library="libwxmsw28u_html.a" />
 					<Add library="libwxmsw28u_core.a" />
