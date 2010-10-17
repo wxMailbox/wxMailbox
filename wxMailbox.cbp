@@ -15,20 +15,19 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-D__WXDEBUG__" />
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib\mswd" />
+					<Add directory="$(WXWIN)\lib\gcc_lib\mswud" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib\mswd" />
+					<Add directory="$(WXWIN)\lib\gcc_lib\mswud" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="libwxmsw28d_aui.a" />
-					<Add library="libwxbase28d_net.a" />
-					<Add library="libwxmsw28d_html.a" />
-					<Add library="libwxmsw28d_core.a" />
-					<Add library="libwxbase28d.a" />
+					<Add library="libwxbase28ud_net.a" />
+					<Add library="libwxmsw28ud_html.a" />
+					<Add library="libwxmsw28ud_core.a" />
+					<Add library="libwxbase28ud.a" />
 					<Add library="libwxpngd.a" />
 					<Add library="libwxzlibd.a" />
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib" />
+					<Add directory="$(WXWIN)\lib\gcc_lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -39,21 +38,20 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib\msw" />
+					<Add directory="$(WXWIN)\lib\gcc_lib\mswu" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib\msw" />
+					<Add directory="$(WXWIN)\lib\gcc_lib\mswu" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28_aui.a" />
-					<Add library="libwxbase28_net.a" />
-					<Add library="libwxmsw28_html.a" />
-					<Add library="libwxmsw28_core.a" />
-					<Add library="libwxbase28.a" />
+					<Add library="libwxbase28u_net.a" />
+					<Add library="libwxmsw28u_html.a" />
+					<Add library="libwxmsw28u_core.a" />
+					<Add library="libwxbase28u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxzlib.a" />
-					<Add directory="C:\wxWidgets-2.8.11\lib\gcc_lib" />
+					<Add directory="$(WXWIN)\lib\gcc_lib" />
 				</Linker>
 			</Target>
 		</Build>
@@ -62,13 +60,14 @@
 			<Add option="-mthreads" />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
+			<Add option="-DwxUSE_UNICODE" />
 			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
 			<Add option="-Wall" />
-			<Add directory="C:\wxWidgets-2.8.11\include" />
-			<Add directory="C:\wxWidgets-2.8.11\contrib\include" />
+			<Add directory="$(WXWIN)\include" />
+			<Add directory="$(WXWIN)\contrib\include" />
 		</Compiler>
 		<ResourceCompiler>
-			<Add directory="C:\wxWidgets-2.8.11\include" />
+			<Add directory="$(WXWIN)\include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-mthreads" />
