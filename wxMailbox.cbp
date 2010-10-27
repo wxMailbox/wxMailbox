@@ -87,13 +87,23 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
-		<Unit filename="resource.rc">
+		<Unit filename="src\ImapConnection.cpp" />
+		<Unit filename="src\ImapConnection.h" />
+		<Unit filename="src\IncomingConnection.cpp" />
+		<Unit filename="src\IncomingConnection.h" />
+		<Unit filename="src\MailAccount.cpp" />
+		<Unit filename="src\MailAccount.h" />
+		<Unit filename="src\Pop3Connection.cpp" />
+		<Unit filename="src\Pop3Connection.h" />
+		<Unit filename="src\SmtpServer.cpp" />
+		<Unit filename="src\SmtpServer.h" />
+		<Unit filename="src\resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="wxMailboxApp.cpp" />
-		<Unit filename="wxMailboxApp.h" />
-		<Unit filename="wxMailboxMain.cpp" />
-		<Unit filename="wxMailboxMain.h" />
+		<Unit filename="src\wxMailboxApp.cpp" />
+		<Unit filename="src\wxMailboxApp.h" />
+		<Unit filename="src\wxMailboxMain.cpp" />
+		<Unit filename="src\wxMailboxMain.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -17,6 +17,7 @@
 
 #include "wxMailboxApp.h"
 #include "wxMailboxMain.h"
+#include "MailAccount.h"
 
 IMPLEMENT_APP(wxMailboxApp);
 

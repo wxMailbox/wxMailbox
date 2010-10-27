@@ -21,6 +21,7 @@ class wxMailboxFrame: public wxFrame
 	public:
 		wxMailboxFrame(wxFrame *frame, const wxString& title);
 		~wxMailboxFrame();
+		wxTextCtrl *m_text;
 	private:
 		enum
 		{

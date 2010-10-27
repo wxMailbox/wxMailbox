@@ -54,6 +54,8 @@ END_EVENT_TABLE()
 wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
 	: wxFrame(frame, -1, title)
 {
+	m_text = new wxTextCtrl(this, wxID_ANY, _(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
+
 #if wxUSE_MENUS
 	// create a menu bar
 	wxMenuBar* mbar = new wxMenuBar();
