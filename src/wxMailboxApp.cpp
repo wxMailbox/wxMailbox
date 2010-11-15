@@ -23,7 +23,7 @@ IMPLEMENT_APP(wxMailboxApp);
 
 bool wxMailboxApp::OnInit()
 {
-	wxMailboxFrame* frame = new wxMailboxFrame(0L, _("wxWidgets Application Template"));
+	wxMailboxFrame* frame = new wxMailboxFrame(0L, _("wxMailbox"));
 	frame->SetIcon(wxICON(aaaa)); // To Set App Icon
 	frame->Show();
 

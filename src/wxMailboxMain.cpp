@@ -17,34 +17,6 @@
 
 #include "wxMailboxMain.h"
 
-//helper functions
-enum wxbuildinfoformat {
-	short_f, long_f };
-
-wxString wxbuildinfo(wxbuildinfoformat format)
-{
-	wxString wxbuild(wxVERSION_STRING);
-
-	if (format == long_f )
-	{
-#if defined(__WXMSW__)
-		wxbuild << _T("-Windows");
-#elif defined(__WXMAC__)
-		wxbuild << _T("-Mac");
-#elif defined(__UNIX__)
-		wxbuild << _T("-Linux");
-#endif
-
-#if wxUSE_UNICODE
-		wxbuild << _T("-Unicode build");
-#else
-		wxbuild << _T("-ANSI build");
-#endif // wxUSE_UNICODE
-	}
-
-	return wxbuild;
-}
-
 BEGIN_EVENT_TABLE(wxMailboxFrame, wxFrame)
 	EVT_CLOSE(wxMailboxFrame::OnClose)
 	EVT_MENU(idMenuQuit, wxMailboxFrame::OnQuit)
@@ -52,11 +24,8 @@ BEGIN_EVENT_TABLE(wxMailboxFrame, wxFrame)
 END_EVENT_TABLE()
 
 wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
-	: wxFrame(frame, -1, title)
+ : wxFrame(frame, -1, title, wxDefaultPosition, wxSize(1200, 700))
 {
-	m_text = new wxTextCtrl(this, wxID_ANY, _(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
-
-#if wxUSE_MENUS
 	// create a menu bar
 	wxMenuBar* mbar = new wxMenuBar();
 	wxMenu* fileMenu = new wxMenu(_T(""));
@@ -68,15 +37,43 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
 	mbar->Append(helpMenu, _("&Help"));
 
 	SetMenuBar(mbar);
-#endif // wxUSE_MENUS
 
-#if wxUSE_STATUSBAR
 	// create a status bar with some information about the used wxWidgets version
 	CreateStatusBar(2);
-	SetStatusText(_("Hello Code::Blocks user!"),0);
-	SetStatusText(wxbuildinfo(short_f), 1);
-#endif // wxUSE_STATUSBAR
 
+	if(wxTheApp->GetComCtl32Version() >= 600 && ::wxDisplayDepth() >= 32)
+	{
+		wxSystemOptions::SetOption(wxT("msw.remap"), 2);
+	}
+	else
+	{
+		wxSystemOptions::SetOption(wxT("msw.remap"), 0);
+	}
+
+	toolBar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL | wxNO_BORDER | wxTB_TEXT);
+	SetToolBar(toolBar);
+	toolBar->Realize();
+
+	splitterMailboxMails = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
+
+	treeMailbox = new wxTreeCtrl(splitterMailboxMails, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT | wxBORDER_SUNKEN | wxTR_HIDE_ROOT);
+	treeMailboxRoot = treeMailbox->AddRoot(_("treeMailboxRoot"));
+	treeMailbox->AppendItem(treeMailboxRoot, _("Test1"));
+	treeMailbox->AppendItem(treeMailbox->AppendItem(treeMailboxRoot, _("Test2")), _("Test20"));
+
+	splitterListMail = new wxSplitterWindow(splitterMailboxMails, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
+
+	listMails = new mailListCtrl(splitterListMail, wxID_ANY);
+	listMails->InsertColumn(0, _("Sender"), wxLIST_FORMAT_LEFT, 200);
+	listMails->InsertColumn(1, _("Subject"), wxLIST_FORMAT_LEFT, 200);
+	listMails->InsertColumn(2, _("Date"), wxLIST_FORMAT_LEFT, 200);
+	listMails->InsertColumn(3, _("Mailbox"), wxLIST_FORMAT_LEFT, 200);
+
+	textMail = new wxTextCtrl(splitterListMail, wxID_ANY, _(""), wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN | wxTE_MULTILINE | wxTE_READONLY | wxVSCROLL | wxHSCROLL | wxALWAYS_SHOW_SB);
+	textMail->Enable(false);
+
+	splitterListMail->SplitHorizontally(listMails, textMail, -400);
+	splitterMailboxMails->SplitVertically(treeMailbox, splitterListMail, 170);
 }
 
 
@@ -96,6 +93,4 @@ void wxMailboxFrame::OnQuit(wxCommandEvent &event)
 
 void wxMailboxFrame::OnAbout(wxCommandEvent &event)
 {
-	wxString msg = wxbuildinfo(long_f);
-	wxMessageBox(msg, _("Welcome to..."));
 }

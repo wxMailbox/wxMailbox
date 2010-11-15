@@ -1,0 +1,8 @@
+bin/*
+obj/*
+wxMailbox.depend
+wxMailbox.layout
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db

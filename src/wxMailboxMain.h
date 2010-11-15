@@ -14,25 +14,40 @@
 	#include <wx/wx.h>
 #endif
 
+#include "wx/sysopt.h"
+#include "wx/toolbar.h"
+#include "wx/splitter.h"
+#include "wx/treectrl.h"
+#include "wx/listctrl.h"
+#include "mailListCtrl.h"
 #include "wxMailboxApp.h"
+
 
 class wxMailboxFrame: public wxFrame
 {
 	public:
 		wxMailboxFrame(wxFrame *frame, const wxString& title);
 		~wxMailboxFrame();
-		wxTextCtrl *m_text;
 	private:
 		enum
 		{
 			idMenuQuit = 1000,
-			idMenuAbout
+			idMenuAbout,
+			idMailList
 		};
+
 		void OnClose(wxCloseEvent& event);
 		void OnQuit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
+
+		wxToolBar* toolBar;
+		wxSplitterWindow* splitterMailboxMails;
+		wxSplitterWindow* splitterListMail;
+		wxTreeCtrl* treeMailbox;
+		mailListCtrl* listMails;
+		wxTextCtrl* textMail;
+
 		DECLARE_EVENT_TABLE()
 };
-
 
 #endif // WXMAILBOXMAIN_H
