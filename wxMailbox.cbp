@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\wxMailbox" prefix_auto="1" extension_auto="1" />
+				<Option output="wxMailbox_debug" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -21,18 +21,19 @@
 					<Add directory="$(WXWIN)\lib\gcc_lib\mswud" />
 				</ResourceCompiler>
 				<Linker>
-					<!--<Add library="libwxcode_msw29ud_wxsqlite3.a" />-->
 					<Add library="libwxbase29ud_net.a" />
 					<Add library="libwxmsw29ud_html.a" />
 					<Add library="libwxmsw29ud_core.a" />
 					<Add library="libwxbase29ud.a" />
 					<Add library="libwxpngd.a" />
 					<Add library="libwxzlibd.a" />
+					<Add library="libKompexSQLiteWrapper_Static.a" />
 					<Add directory="$(WXWIN)\lib\gcc_lib" />
+					<Add directory="$(KOMPEX)\DebugStaticLib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin\Release\wxMailbox" prefix_auto="1" extension_auto="1" />
+				<Option output="wxMailbox" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -46,27 +47,30 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<!--<Add library="libwxcode_msw29u_wxsqlite3.a" />-->
 					<Add library="libwxbase29u_net.a" />
 					<Add library="libwxmsw29u_html.a" />
 					<Add library="libwxmsw29u_core.a" />
 					<Add library="libwxbase29u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxzlib.a" />
+					<Add library="libKompexSQLiteWrapper_Static.a" />
 					<Add directory="$(WXWIN)\lib\gcc_lib" />
+					<Add directory="$(KOMPEX)\ReleaseStaticLib" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wall" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
+			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
-			<Add option="-Wall" />
 			<Add directory="$(WXWIN)\include" />
 			<Add directory="$(WXWIN)\contrib\include" />
+			<Add directory="$(KOMPEX)\src" />
+			<Add directory="$(GNUTLS)\include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(WXWIN)\include" />
@@ -86,6 +90,8 @@
 			<Add library="libcomctl32.a" />
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
+			<Add library="libgnutls.dll.a" />
+			<Add directory="$(GNUTLS)\lib" />
 		</Linker>
 		<Unit filename="src\ImapConnection.cpp" />
 		<Unit filename="src\ImapConnection.h" />
@@ -106,6 +112,8 @@
 		<Unit filename="src\wxMailboxApp.h" />
 		<Unit filename="src\wxMailboxMain.cpp" />
 		<Unit filename="src\wxMailboxMain.h" />
+		<Unit filename="src\wxMailboxToolBar.cpp" />
+		<Unit filename="src\wxMailboxToolBar.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

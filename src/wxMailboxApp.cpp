@@ -19,13 +19,71 @@
 #include "wxMailboxMain.h"
 #include "MailAccount.h"
 
+#include <iostream>
+#include <exception>
+
+#include "KompexSQLitePrerequisites.h"
+#include "KompexSQLiteDatabase.h"
+#include "KompexSQLiteStatement.h"
+#include "KompexSQLiteException.h"
+#include "KompexSQLiteStreamRedirection.h"
+
+#include <gnutls/gnutls.h>
+
 IMPLEMENT_APP(wxMailboxApp);
 
 bool wxMailboxApp::OnInit()
 {
-	wxMailboxFrame* frame = new wxMailboxFrame(0L, _("wxMailbox"));
+	wxFileName configPath;
+
+	configPath = wxFileConfig::GetLocalFile("config.ini", wxCONFIG_USE_SUBDIR);
+
+	if(!configPath.DirExists())
+	{
+		wxFileConfig *newConfig;
+		int displaySizeX;
+		int displaySizeY;
+
+		configPath.Mkdir();
+
+		newConfig = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
+
+		newConfig->Write("Main/width", 900);
+		newConfig->Write("Main/height", 500);
+
+		wxDisplaySize(&displaySizeX, &displaySizeY);
+
+		newConfig->Write("Main/posX", displaySizeX/2 - 450);
+		newConfig->Write("Main/posY", displaySizeY/2 - 250);
+
+		delete newConfig;
+	}
+
+	config = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
+
+	wxMailboxFrame* frame = new wxMailboxFrame(0L, _("wxMailbox"), wxPoint(getConfigLong("Main/posX"), getConfigLong("Main/posY")), wxSize(getConfigLong("Main/width"), getConfigLong("Main/height")));
+
 	frame->SetIcon(wxICON(aaaa)); // To Set App Icon
 	frame->Show();
 
 	return true;
+}
+
+wxMailboxApp::~wxMailboxApp()
+{
+	delete config;
+}
+
+long wxMailboxApp::getConfigLong(const wxString &key)
+{
+	long temp;
+
+	config->Read(key, &temp);
+
+	return temp;
+}
+
+void wxMailboxApp::setConfig(const wxString &key, long value)
+{
+	config->Write(key, value);
 }

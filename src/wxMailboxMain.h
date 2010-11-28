@@ -15,18 +15,17 @@
 #endif
 
 #include "wx/sysopt.h"
-#include "wx/toolbar.h"
 #include "wx/splitter.h"
 #include "wx/treectrl.h"
 #include "wx/listctrl.h"
 #include "mailListCtrl.h"
 #include "wxMailboxApp.h"
-
+#include "wxMailboxToolBar.h"
 
 class wxMailboxFrame: public wxFrame
 {
 	public:
-		wxMailboxFrame(wxFrame *frame, const wxString& title);
+		wxMailboxFrame(wxFrame *frame, const wxString& title, const wxPoint& pos, const wxSize& size);
 		~wxMailboxFrame();
 	private:
 		enum
@@ -40,10 +39,11 @@ class wxMailboxFrame: public wxFrame
 		void OnQuit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
 
-		wxToolBar* toolBar;
+		wxMailboxToolBar* toolBar;
 		wxSplitterWindow* splitterMailboxMails;
 		wxSplitterWindow* splitterListMail;
 		wxTreeCtrl* treeMailbox;
+		wxTreeItemId treeMailboxRoot;
 		mailListCtrl* listMails;
 		wxTextCtrl* textMail;
 

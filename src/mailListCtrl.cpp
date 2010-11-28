@@ -9,7 +9,7 @@ END_EVENT_TABLE()
 mailListCtrl::mailListCtrl(wxWindow* parent, wxWindowID id)
  : wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_SUNKEN | wxVSCROLL | wxHSCROLL | wxALWAYS_SHOW_SB | wxLC_VIRTUAL | wxFULL_REPAINT_ON_RESIZE)
 {
-	SetItemCount(10);
+	SetItemCount(1000);
 }
 
 mailListCtrl::~mailListCtrl()
@@ -26,18 +26,18 @@ void mailListCtrl::OnColumnDrag(wxListEvent& event)
 {
 	const wxListItem& item = event.GetItem();
 
-	if(item.GetWidth() < 50)
+	if(item.GetWidth() < 20)
 	{
-		SetColumnWidth(event.GetColumn(), 50);
+		SetColumnWidth(event.GetColumn(), 20);
 		event.Veto();
 	}
 }
 
 void mailListCtrl::OnColumnEndDrag(wxListEvent& event)
 {
-	if(GetColumnWidth(event.GetColumn()) < 50)
+	if(GetColumnWidth(event.GetColumn()) < 20)
 	{
-		SetColumnWidth(event.GetColumn(), 50);
+		SetColumnWidth(event.GetColumn(), 20);
 		event.Veto();
 	}
 }

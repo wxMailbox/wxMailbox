@@ -23,9 +23,20 @@ BEGIN_EVENT_TABLE(wxMailboxFrame, wxFrame)
 	EVT_MENU(idMenuAbout, wxMailboxFrame::OnAbout)
 END_EVENT_TABLE()
 
-wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
- : wxFrame(frame, -1, title, wxDefaultPosition, wxSize(1200, 700))
+wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title, const wxPoint& pos, const wxSize& size)
+ : wxFrame(frame, -1, title, pos, size)
 {
+	wxImage::AddHandler(new wxPNGHandler);
+
+	if(wxTheApp->GetComCtl32Version() >= 600 && ::wxDisplayDepth() >= 32)
+	{
+		wxSystemOptions::SetOption(wxT("msw.remap"), 2);
+	}
+	else
+	{
+		wxSystemOptions::SetOption(wxT("msw.remap"), 0);
+	}
+
 	// create a menu bar
 	wxMenuBar* mbar = new wxMenuBar();
 	wxMenu* fileMenu = new wxMenu(_T(""));
@@ -41,18 +52,8 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
 	// create a status bar with some information about the used wxWidgets version
 	CreateStatusBar(2);
 
-	if(wxTheApp->GetComCtl32Version() >= 600 && ::wxDisplayDepth() >= 32)
-	{
-		wxSystemOptions::SetOption(wxT("msw.remap"), 2);
-	}
-	else
-	{
-		wxSystemOptions::SetOption(wxT("msw.remap"), 0);
-	}
-
-	toolBar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL | wxNO_BORDER | wxTB_TEXT);
+	toolBar = new wxMailboxToolBar(this, wxID_ANY);
 	SetToolBar(toolBar);
-	toolBar->Realize();
 
 	splitterMailboxMails = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
 
@@ -72,13 +73,29 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title)
 	textMail = new wxTextCtrl(splitterListMail, wxID_ANY, _(""), wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN | wxTE_MULTILINE | wxTE_READONLY | wxVSCROLL | wxHSCROLL | wxALWAYS_SHOW_SB);
 	textMail->Enable(false);
 
-	splitterListMail->SplitHorizontally(listMails, textMail, -400);
+	splitterListMail->SplitHorizontally(listMails, textMail, -200);
 	splitterMailboxMails->SplitVertically(treeMailbox, splitterListMail, 170);
 }
 
 
 wxMailboxFrame::~wxMailboxFrame()
 {
+	wxMailboxApp* mailBoxApp;
+	int width;
+	int height;
+	int posX;
+	int posY;
+
+	GetSize(&width, &height);
+	GetPosition(&posX, &posY);
+
+	mailBoxApp = (wxMailboxApp*)wxTheApp;
+
+	mailBoxApp->setConfig("Main/width", width);
+	mailBoxApp->setConfig("Main/height", height);
+
+	mailBoxApp->setConfig("Main/posX", posX);
+	mailBoxApp->setConfig("Main/posY", posY);
 }
 
 void wxMailboxFrame::OnClose(wxCloseEvent &event)
