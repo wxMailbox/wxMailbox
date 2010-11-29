@@ -45,6 +45,7 @@ bool wxMailboxApp::OnInit()
 		int displaySizeY;
 
 		configPath.Mkdir();
+		configPath.AppendDir(_("Mailboxes"));
 
 		newConfig = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
 

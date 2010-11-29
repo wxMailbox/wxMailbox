@@ -13,12 +13,8 @@ MailAccount::MailAccount(const wxString& path)
 	wxFileConfig* config;
 	wxFileInputStream* stream;
 	wxString file;
-	wxString str;
 
 	file = path + _("/config.ini");
-
-	msg = new wxMessageDialog(NULL, file);
-	msg->ShowModal();
 
 	stream = new wxFileInputStream(file);
 	config = new wxFileConfig(*stream);
