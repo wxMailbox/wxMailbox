@@ -1,7 +1,35 @@
 #include "MailAccount.h"
 
-MailAccount::MailAccount(AccountType _type, SmtpServer& _smtpServer)
- : type(_type), smtpServer(_smtpServer)
+
+vector<MailAccount*> MailAccount::accounts;
+
+MailAccount::MailAccount()
+{
+	accounts.push_back(this);
+}
+
+MailAccount::MailAccount(const wxString& path)
+{
+	wxFileConfig* config;
+	wxFileInputStream* stream;
+	wxString file;
+	wxString str;
+
+	file = path + _("/config.ini");
+
+	msg = new wxMessageDialog(NULL, file);
+	msg->ShowModal();
+
+	stream = new wxFileInputStream(file);
+	config = new wxFileConfig(*stream);
+
+	//config->Read(_("Mailbox/type"), &type);
+
+	delete config;
+}
+
+MailAccount::MailAccount(AccountType _type)
+ : type(_type)
 {
 	address = new wxIPV4address();
 }
@@ -67,7 +95,7 @@ void MailAccount::setPassword(wxString _password)
 	password = _password;
 }
 
-void MailAccount::setSmtpServer(SmtpServer& _smtpServer)
+void MailAccount::setSmtpServer(SmtpServer* _smtpServer)
 {
 	smtpServer = _smtpServer;
 }
@@ -107,7 +135,32 @@ wxString MailAccount::getPassword() const
 	return password;
 }
 
-SmtpServer& MailAccount::getSmtpServer() const
+SmtpServer* MailAccount::getSmtpServer() const
 {
 	return smtpServer;
+}
+
+void MailAccount::loadAccounts()
+{
+	//wxMessageDialog *msg;
+	wxDir *dir;
+	wxString path;
+	wxString file;
+	bool more;
+
+	path = wxString::Format(_("%s/%s"), wxFileConfig::GetLocalFile("", wxCONFIG_USE_SUBDIR).GetPath(), _("Mailboxes"));
+	dir = new wxDir(path);
+
+	//msg = new wxMessageDialog(NULL, path);
+	//msg->ShowModal();
+
+	more = dir->GetFirst(&file, wxEmptyString, wxDIR_DIRS);
+	while(more)
+	{
+		//msg = new wxMessageDialog(NULL, file);
+		//msg->ShowModal();
+		new MailAccount(wxString::Format(_("%s/%s"), path, file));
+
+		more = dir->GetNext(&file);
+	}
 }

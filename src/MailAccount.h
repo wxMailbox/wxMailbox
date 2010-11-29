@@ -2,8 +2,15 @@
 #define MAILACCOUNT_H
 
 #include <iostream>
+#include <vector>
+
 #include <wx/socket.h>
 #include <wx/string.h>
+#include <wx/filename.h>
+#include <wx/fileconf.h>
+#include <wx/config.h>
+#include <wx/dir.h>
+#include <wx/wfstream.h>
 
 #include "SmtpServer.h"
 #include "IncomingConnection.h"
@@ -21,7 +28,10 @@ class MailAccount
 			IMAP
 		};
 
-		MailAccount(AccountType _type, SmtpServer& smtpServer);
+		MailAccount();
+		MailAccount(const wxString& path);
+		MailAccount(AccountType _type);
+		//MailAccount(const wxString& path);
 		virtual ~MailAccount();
 		bool connect();
 
@@ -32,7 +42,7 @@ class MailAccount
 		void setPort(unsigned short port);
 		void setUsername(wxString _username);
 		void setPassword(wxString _password);
-		void setSmtpServer(SmtpServer& _smtpServer);
+		void setSmtpServer(SmtpServer* _smtpServer);
 		wxString getMail() const;
 		wxString getDescription() const;
 		wxString getFullName() const;
@@ -40,10 +50,13 @@ class MailAccount
 		unsigned short getPort() const;
 		wxString getUsername() const;
 		wxString getPassword() const;
-		SmtpServer& getSmtpServer() const;
+		SmtpServer* getSmtpServer() const;
+
+		static vector<MailAccount*> accounts;
+		static void loadAccounts();
 
 	private:
-		const AccountType type;
+		AccountType type;
 
 		wxString mail;
 		wxString description;
@@ -53,7 +66,7 @@ class MailAccount
 		wxString username;
 		wxString password;
 
-		SmtpServer& smtpServer;
+		SmtpServer* smtpServer;
 		IncomingConnection* connection;
 };
 

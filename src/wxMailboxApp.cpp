@@ -61,6 +61,8 @@ bool wxMailboxApp::OnInit()
 
 	config = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
 
+	MailAccount::loadAccounts();
+
 	wxMailboxFrame* frame = new wxMailboxFrame(0L, _("wxMailbox"), wxPoint(getConfigLong("Main/posX"), getConfigLong("Main/posY")), wxSize(getConfigLong("Main/width"), getConfigLong("Main/height")));
 
 	frame->SetIcon(wxICON(aaaa)); // To Set App Icon
