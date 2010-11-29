@@ -37,6 +37,8 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title, const wxPo
 		wxSystemOptions::SetOption(wxT("msw.remap"), 0);
 	}
 
+	SetMinSize(wxSize(700, 440));
+
 	// create a menu bar
 	wxMenuBar* mbar = new wxMenuBar();
 	wxMenu* fileMenu = new wxMenu(_T(""));
@@ -49,13 +51,13 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title, const wxPo
 
 	SetMenuBar(mbar);
 
-	// create a status bar with some information about the used wxWidgets version
 	CreateStatusBar(2);
 
 	toolBar = new wxMailboxToolBar(this, wxID_ANY);
 	SetToolBar(toolBar);
 
 	splitterMailboxMails = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
+	splitterMailboxMails->SetMinimumPaneSize(100);
 
 	treeMailbox = new wxTreeCtrl(splitterMailboxMails, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT | wxBORDER_SUNKEN | wxTR_HIDE_ROOT);
 	treeMailboxRoot = treeMailbox->AddRoot(_("treeMailboxRoot"));
@@ -63,6 +65,7 @@ wxMailboxFrame::wxMailboxFrame(wxFrame *frame, const wxString& title, const wxPo
 	treeMailbox->AppendItem(treeMailbox->AppendItem(treeMailboxRoot, _("Test2")), _("Test20"));
 
 	splitterListMail = new wxSplitterWindow(splitterMailboxMails, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
+	splitterListMail->SetMinimumPaneSize(100);
 
 	listMails = new mailListCtrl(splitterListMail, wxID_ANY);
 	listMails->InsertColumn(0, _("Sender"), wxLIST_FORMAT_LEFT, 200);

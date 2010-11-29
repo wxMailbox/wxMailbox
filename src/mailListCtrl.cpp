@@ -7,7 +7,7 @@ BEGIN_EVENT_TABLE(mailListCtrl, wxListCtrl)
 END_EVENT_TABLE()
 
 mailListCtrl::mailListCtrl(wxWindow* parent, wxWindowID id)
- : wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_SUNKEN | wxVSCROLL | wxHSCROLL | wxALWAYS_SHOW_SB | wxLC_VIRTUAL | wxFULL_REPAINT_ON_RESIZE)
+ : wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_SUNKEN | wxVSCROLL | wxALWAYS_SHOW_SB | wxLC_VIRTUAL | wxFULL_REPAINT_ON_RESIZE)
 {
 	SetItemCount(100000000);
 }
