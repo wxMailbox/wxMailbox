@@ -3,7 +3,6 @@
 
 #include "wx/listctrl.h"
 
-
 class mailListCtrl : public wxListCtrl
 {
 	public:

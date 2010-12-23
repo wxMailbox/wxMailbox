@@ -16,19 +16,6 @@
 #endif //__BORLANDC__
 
 #include "wxMailboxApp.h"
-#include "wxMailboxMain.h"
-#include "MailAccount.h"
-
-#include <iostream>
-#include <exception>
-
-#include "KompexSQLitePrerequisites.h"
-#include "KompexSQLiteDatabase.h"
-#include "KompexSQLiteStatement.h"
-#include "KompexSQLiteException.h"
-#include "KompexSQLiteStreamRedirection.h"
-
-#include <gnutls/gnutls.h>
 
 IMPLEMENT_APP(wxMailboxApp);
 
@@ -45,7 +32,6 @@ bool wxMailboxApp::OnInit()
 		int displaySizeY;
 
 		configPath.Mkdir();
-		configPath.AppendDir(_("Mailboxes"));
 
 		newConfig = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
 
@@ -58,6 +44,38 @@ bool wxMailboxApp::OnInit()
 		newConfig->Write("Main/posY", displaySizeY/2 - 250);
 
 		delete newConfig;
+	}
+
+	configPath.AppendDir("Mailboxes");
+
+	if(!configPath.DirExists())
+	{
+		configPath.Mkdir();
+	}
+
+	if(!configPath.FileExists(configPath.GetPath() + "/Envelope Index.db"))
+	{
+		try
+		{
+			sqlDatabase = new Kompex::SQLiteDatabase(configPath.GetPath() + "/Envelope Index.db", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, 0);
+			sqlStmt = new Kompex::SQLiteStatement(sqlDatabase);
+
+			sqlStmt->SqlStatement("CREATE TABLE messages (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, subject INTEGER, date_sent INTEGER, date_received INTEGER, date_created INTEGER, date_last_viewed INTEGER, mailbox INTEGER, remote_mailbox INTEGER, original_mailbox INTEGER, read INTEGER)");
+			sqlStmt->SqlStatement("CREATE TABLE addresses (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, address COLLATE NOCASE, comment, UNIQUE(address, comment))");
+
+			sqlStmt->FreeQuery();
+		}
+		catch(Kompex::SQLiteException &exception)
+		{
+			wxMessageDialog *msg;
+			msg = new wxMessageDialog(NULL, exception.GetString(), "SQLite Exception");
+			msg->ShowModal();
+		}
+	}
+	else
+	{
+		sqlDatabase = new Kompex::SQLiteDatabase(configPath.GetPath() + "/Envelope Index.db", SQLITE_OPEN_READWRITE, 0);
+		sqlStmt = new Kompex::SQLiteStatement(sqlDatabase);
 	}
 
 	config = new wxFileConfig("wxMailbox", "wxMailbox", "config.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_SUBDIR);
