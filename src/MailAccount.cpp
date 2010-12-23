@@ -13,13 +13,38 @@ MailAccount::MailAccount(const wxString& path)
 	wxFileConfig* config;
 	wxFileInputStream* stream;
 	wxString file;
+	wxString temp;
+	int port;
 
 	file = path + _("/config.ini");
 
 	stream = new wxFileInputStream(file);
 	config = new wxFileConfig(*stream);
 
-	//config->Read(_("Mailbox/type"), &type);
+	address = new wxIPV4address();
+
+	config->Read(_("Mailbox/type"), &temp);
+
+	if(temp == "imap")
+	{
+		type = IMAP;
+	}
+	else if(temp == "pop3")
+	{
+		type = POP3;
+	}
+
+	config->Read(_("Mailbox/mail"), &mail);
+	config->Read(_("Mailbox/description"), &description);
+	config->Read(_("Mailbox/fullName"), &fullName);
+	config->Read(_("Mailbox/username"), &username);
+	config->Read(_("Mailbox/password"), &password);
+
+	config->Read(_("Mailbox/server"), &temp);
+	setServer(temp);
+
+	config->Read(_("Mailbox/port"), &port);
+	setPort(port);
 
 	delete config;
 }
